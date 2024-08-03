@@ -41,11 +41,6 @@ The backend will be accessible at:
     
     http://localhost:8000
 
-## Cleanup
-
-    docker compose -p fullstack down
-    docker compose ls
-
 ### Pushing Images to Docker Hub
 #### Tag Docker Images
 After building the images, tag them with your Docker Hub repository name. Replace <username> with your Docker Hub username and <repository> with your repository name:
@@ -58,6 +53,11 @@ After building the images, tag them with your Docker Hub repository name. Replac
 Push the tagged images to Docker Hub:
 
     docker push <username>/shop:v1
+
+## Cleanup
+
+    docker compose -p fullstack down
+    docker compose ls
 
 ## Acknowledgments
 We would like to acknowledge Tech With Tim for the original tutorial and codebase. This Dockerization project builds upon the fantastic work done in the tutorial to create a containerized version of the application.
