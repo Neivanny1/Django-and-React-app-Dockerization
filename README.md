@@ -29,10 +29,25 @@ DATABASE_USER=your_db_user
 DATABASE_PASSWORD=your_db_password
 ```
 ### Building and Running the Docker Images
-#### Build the Images
+#### Build the DATABASE
 Navigate to the directory containing your docker-compose.yml file and run the following command to build the Docker images:
 
-    docker-compose -p fullstack up -d
+    docker network create database
+    docker run --name my-postgres -e POSTGRES_USER=backend -e POSTGRES_PASSWORD=backend -d --network=database postgres
+
+#### Build the BACKEND
+Navigate to the directory containing your docker-compose.yml file and run the following command to build the Docker images:
+
+    docker build -t todo_backend:v1 .
+    docker run --name todo_backend -p 8000:8000 --network=database -d todo_backend:v1
+    docker exec -it todo_backend python3 manage.py migrate
+
+#### Build the FRONTEND
+Navigate to the directory containing your docker-compose.yml file and run the following command to build the Docker images:
+
+    docker build -t todo_frontend:v1 .
+    docker run --name todo_frontend -d -p 3000:3000 todo_frontend:v1
+
 ### Access the Application
 The frontend will be accessible at:
 
@@ -45,7 +60,7 @@ The backend will be accessible at:
 #### Tag Docker Images
 After building the images, tag them with your Docker Hub repository name. Replace <username> with your Docker Hub username and <repository> with your repository name:
 
-    docker tag project-root_frontend:latest <username>/shop:v1
+    docker tag todo_frontend:latest <username>/shop:v1
 
     docker tag project-root_backend:latest <username>/shop:v1
 
