@@ -1,24 +1,20 @@
-# Base image
-FROM python:3-slim
+# Use the official Python image from the DockerHub
+FROM python:3.10-slim
+# Set environment variables
+ENV PIP_DISABLE_PIP_VERSION_CHECK 1
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+# Set the working directory in docker
+WORKDIR /app
 
-EXPOSE 8000
-
-# Environment variables to avoid .pyc files and buffer issues
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# Install dependencies
+# Copy the dependencies file to the working directory
 COPY requirements.txt .
+
+# Install any dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Set working directory and copy codebase
-WORKDIR /app
-COPY . /app
-
-# Create a non-root user
-RUN adduser -u 5678 --disabled-password --gecos "" backend && chown -R backend /app
-USER backend
-
+# Copy the content of the local src directory to the working directory
+COPY . .
 # Copy entrypoint script and set it as the entrypoint
 COPY entrypoint.sh /app/entrypoint.sh
 ENTRYPOINT ["/app/entrypoint.sh"]

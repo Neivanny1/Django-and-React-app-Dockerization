@@ -1,12 +1,13 @@
-FROM node:lts-alpine as builder
+FROM node:lts-alpine
 
 WORKDIR /app
 COPY package.json .
 
 RUN npm install
 COPY . .
-RUN npm run build
 
-FROM nginx:alpine
+# Expose the port that Vite uses
+EXPOSE 3000
 
-COPY --from=builder /app/build /usr/share/nginx/html
+# Start the Vite preview server
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]
