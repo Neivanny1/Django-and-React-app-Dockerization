@@ -27,11 +27,13 @@ We have added Dockerfiles for both the backend (Django) and frontend (React) com
 ### Environment Variables
 To securely manage environment variables, create a .env file in the project root:
 
-```.env
-DATABASE_NAME=your_db_name
-DATABASE_USER=your_db_user
-DATABASE_PASSWORD=your_db_password
-```
+    echo "
+    DATABASE_NAME=your_db_name
+    DATABASE_USER=your_db_user
+    DATABASE_PASSWORD=your_db_password
+    DATABASE_HOST=localhost
+    ">.env
+
 ### BUILDING IMAGE WITH Dockerfile
 #### BUILD THE DATABASE
 Run command below which creates a network to which we map to backend to be able to communicate, the other builds and run the postgres image:
