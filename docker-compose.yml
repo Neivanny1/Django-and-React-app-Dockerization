@@ -1,17 +1,16 @@
-version: '3'
-
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
+  database:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    volumes:
+      - type: volume
+        source: postgres_data
+        target: /var/lib/postgresql/data
     networks:
-      - frontend
-      - backend
-    depends_on:
-      - backend
+      - counter-net
 
   backend:
     build:
@@ -23,30 +22,38 @@ services:
       - DATABASE_NAME=${DATABASE_NAME}
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-      - DATABASE_HOST=db
+      - DATABASE_HOST=database
       - DATABASE_PORT=5432
     networks:
-      - backend
+      - counter-net
     depends_on:
-      - db
+      - database
     command: >
       sh -c "python3 manage.py migrate &&
              python3 manage.py runserver 0.0.0.0:8000"
-
-  db:
-    image: postgres:13
-    environment:
-      POSTGRES_DB: ${DATABASE_NAME}
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - type: volume
+        source: backend-vol
+        target: /app
+  fronted:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
     networks:
+      - counter-net
+    depends_on:
       - backend
-
-volumes:
-  postgres_data:
+    volumes:
+      - type: volume
+        source: frontend-vol
+        target: /app
 
 networks:
-  frontend:
-  backend:
+  counter-net:
+
+volumes:
+  frontend-vol:
+  backend-vol:
+  postgres_data:

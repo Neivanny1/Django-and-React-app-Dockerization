@@ -69,6 +69,11 @@ Push the tagged images to Docker Hub:
 
     docker push <username>/shop:v1
 
+### Build the Images with DOCKER COMPOSE
+Navigate to the directory containing your docker-compose.yml file and run the following command to build the Docker images:
+
+    docker-compose -p fullstack up -d
+
 ## Cleanup
 
     docker-compose -p fullstack down

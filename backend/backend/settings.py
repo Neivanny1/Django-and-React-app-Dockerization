@@ -101,7 +101,7 @@ DATABASES = {
         "NAME": "backend",
         "USER": "backend",
         "PASSWORD": "backend",
-        "HOST": 'my-postgres',
+        "HOST": 'database',
         "PORT": 5432,
     }
 }
