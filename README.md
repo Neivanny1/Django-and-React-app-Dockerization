@@ -55,7 +55,7 @@ Navigate to the backend directoryand run the following command to build the Dock
 #### BUILD THE FRONTEND
 Navigate to the frontend directory and run the following command to build the Docker images:
 
-    cd backend
+    cd frontend
     docker build -t todo_frontend:v1 .
     docker run --name todo_frontend -d -p 3000:3000 todo_frontend:v1
 
